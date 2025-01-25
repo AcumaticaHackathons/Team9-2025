@@ -1,0 +1,38 @@
+
+# Settings
+/.vs
+/.idea
+/src/.vs
+/src/.idea
+hackathon-2025-team-9.sln.DotSettings.user
+/Packages
+# Project files
+
+/src/.vs
+/src/*/bin
+/src/*/obj
+
+# Customization files
+
+/cust/*/Bin
+
+/*.zip
+
+#Site Files
+/BackUp
+/Customization
+/Acumatica_24_2/*
+!/Acumatica_24_2/App_Data/
+/Acumatica_24_2/App_Data/*
+!/Acumatica_24_2/App_Data/SnapshotConfigs/
+/Acumatica_24_2/App_Data/SnapshotConfigs/*
+!/Acumatica_24_2/Content/
+/Acumatica_24_2/Content/*
+!/Acumatica_24_2/Content/svg_icons/
+/Acumatica_24_2/Content/svg_icons/*
+!/Acumatica_24_2/Content/svg_icons/LS*
+!/Acumatica_24_2/Pages
+/Acumatica_24_2/Pages/*
+!/Acumatica_24_2/Pages/LS
+/Snapshots
+/TemporaryAspFiles
