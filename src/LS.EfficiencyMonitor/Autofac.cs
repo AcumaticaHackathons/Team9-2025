@@ -11,7 +11,8 @@ namespace LS.EfficiencyMonitor
             // Register MyHostedService as IHostedService
             builder.RegisterType<CpuUtilizationMonitorService>()
                    .As<IHostedService>()
-                   .SingleInstance();  // This makes it singleton, adjust as needed
+                   .Named<IHostedService>(nameof(CpuUtilizationMonitorService))
+                   .SingleInstance(); // This makes it singleton, adjust as needed
         }
     }
 }

@@ -1,22 +1,38 @@
-﻿using Microsoft.Extensions.Hosting;
-using PX.SM;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using PX.SM;
 
 namespace LS.EfficiencyMonitor
 {
     public class CpuUtilizationMonitorService : IHostedService
     {
-        private Timer _monitoringTimer;
+        private          Timer     _monitoringTimer;
         private readonly List<int> _cpuUtilizationHistory = new(MaxHistorySize);
-        private const int MaxHistorySize = 3600;
+        private const    int       MaxHistorySize         = 1800;
+        public const     int       SecondsIn15Minutes     = 900;
+
+        public CpuUsage GetLast15MinutesCpu()
+        {
+            _cpuUtilizationHistory.Reverse();
+            int[] last15Minutes =
+                _cpuUtilizationHistory.Take(CpuUtilizationMonitorService.SecondsIn15Minutes).ToArray();
+            _cpuUtilizationHistory.Reverse();
+            return new CpuUsage
+            {
+                MaxUsage = last15Minutes.Max(),
+                MinUsage = last15Minutes.Min(),
+                AvgUsage = (int)last15Minutes.Average()
+            };
+        }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _monitoringTimer = new Timer(GetUtilization, _cpuUtilizationHistory,2000,2000);
+            _monitoringTimer = new Timer(GetUtilization, _cpuUtilizationHistory, 2000, 2000);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

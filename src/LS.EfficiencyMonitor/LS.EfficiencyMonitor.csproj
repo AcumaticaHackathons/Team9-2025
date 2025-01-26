@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <BaseOutputPath>bin\</BaseOutputPath>
@@ -16,8 +16,14 @@
       <HintPath>$(AcumaticaSiteDir)Bin\Autofac.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="CommonServiceLocator">
+      <HintPath>..\..\Acumatica_24_2\Bin\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
       <HintPath>..\..\Acumatica_24_2\Bin\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.LicensePolicy">
+      <HintPath>..\..\Acumatica_24_2\Bin\PX.LicensePolicy.dll</HintPath>
     </Reference>
     <Reference Include="Serilog">
       <SpecificVersion>False</SpecificVersion>
