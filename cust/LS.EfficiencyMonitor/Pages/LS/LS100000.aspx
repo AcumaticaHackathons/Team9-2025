@@ -23,7 +23,7 @@
 			<px:PXNumberEdit ID="CpuThreshold" runat="server"  DataField="CpuThreshold" />
 
 			<px:PXLayoutRule runat="server" StartRow="False" StartColumn="True"/>
-			<px:PXLabel runat="server" ID="PXLabel12"/>
+			<px:PXNumberEdit ID="UserReportThresholdTime" runat="server"  DataField="UserReportThresholdTime" />
 			<px:PXNumberEdit ID="CpuThresholdTime" runat="server"  DataField="CpuThresholdTime" />
 			
 			<px:PXLayoutRule runat="server" StartRow="True" ControlSize="M"/>

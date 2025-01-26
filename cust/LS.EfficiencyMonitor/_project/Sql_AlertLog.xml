@@ -1,0 +1,18 @@
+﻿<Sql TableName="AlertLog" TableSchemaXml="#CDATA">
+    <CDATA name="TableSchemaXml"><![CDATA[<table name="AlertLog">
+  <col name="USERID" type="NVarChar(15)" />
+  <col name="Status" type="Int" nullable="true" />
+  <col name="StatusDesc" type="Char(1)" nullable="true" />
+  <col name="CreatedDateTime" type="DateTime" />
+  <col name="CreatedByScreenID" type="NVarChar(50)" nullable="true" />
+  <col name="tstamp" type="Timestamp" />
+  <col name="CreatedByID" type="UniqueIdentifier" nullable="true" />
+  <col name="LastModifiedDateTime" type="DateTime" nullable="true" />
+  <col name="LastModifiedByID" type="UniqueIdentifier" nullable="true" />
+  <col name="LastModifiedByScreenID" type="NVarChar(50)" nullable="true" />
+  <col name="NoteID" type="UniqueIdentifier" nullable="true" />
+  <index name="PK__AlertLog__19ED7162E92AF3F7" clustered="true" primary="true" unique="true">
+    <col name="CreatedDateTime" />
+  </index>
+</table>]]></CDATA>
+</Sql>
