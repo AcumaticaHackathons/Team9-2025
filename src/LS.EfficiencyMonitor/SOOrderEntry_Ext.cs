@@ -16,6 +16,9 @@ namespace PX.Objects.SO
 
         public PXSelectOrderBy<AlertLog, OrderBy<Desc<AlertLog.createdDateTime>>> logs;
 
+        [PXCopyPasteHiddenView]
+        public PXFilter<PopUpFilter> PopUpFilter;
+
         #region Actions
 
         public PXAction<SOOrder> ReportDelay;
@@ -26,6 +29,8 @@ namespace PX.Objects.SO
         [PXProcessButton]
         protected virtual IEnumerable reportDelay(PXAdapter adapter)
         {
+            if (PopUpFilter.AskExt() != WebDialogResult.OK) return adapter.Get();
+
             PXLongOperation.StartOperation(this, () =>
             {
                 Alert_Log logGraph = PXGraph.CreateInstance<Alert_Log>();
@@ -40,7 +45,6 @@ namespace PX.Objects.SO
         private static void SendNotificationEmail(Alert_Log logGraph)
         {
             var      erpTrans         = logGraph.LicenseTran.SelectMain();
-            var      currentProcesses = logGraph.CurrentProcesses.SelectMain();
             CpuUtilizationMonitorService monitor =
                 ServiceLocator.Current.GetInstance<IHostedService>(nameof(CpuUtilizationMonitorService)) as
                     CpuUtilizationMonitorService;
@@ -48,17 +52,19 @@ namespace PX.Objects.SO
             NotificationGenerator notificationGenerator = new();
             notificationGenerator.To      = "kyle@contou.com";
             notificationGenerator.Subject = "Users Are Reporting Delays in Responsiveness";
-            string body = "<html>"                                                                +
-                          "<body>"                                                                +
-                          "<p>Hello,</p>"                                                         +
-                          "<p>Users have been reporting delays in the Acumatica Application.</p>" +
-                          "<p>Over the last 15 minutes:</p>"                                      +
-                          "<hr>"                                                                  +
-                          $"<p><strong>Average CPU Utilization:</strong> {cpuUsage.AvgUsage}</p>" +
-                          $"<p><strong>Max CPU Utilization:</strong> {cpuUsage.MaxUsage}</p>"     +
-                          $"<p><strong>Min CPU Utilization:</strong> {cpuUsage.MinUsage}</p>"     +
-                          "<br>"                                                                  +
-                          "<p><strong>ERP Transactions in the Last 5 Minutes:</strong></p>"       +
+            string body = "<html>"                                                                        +
+                          "<body>"                                                                        +
+                          "<h2>User Experience Degraded</h2>"                                             +
+                          "<p><strong>Threshold Reached:</strong> User Reports in the last 5 minutes</p>" +
+                          "<hr>"                                                                          +
+                          "<p>Users have been reporting delays in the Acumatica Application.</p>"         +
+                          "<p>Over the last 15 minutes:</p>"                                              +
+                          "<hr>"                                                                          +
+                          $"<p><strong>Average CPU Utilization:</strong> {cpuUsage.AvgUsage}</p>"         +
+                          $"<p><strong>Max CPU Utilization:</strong> {cpuUsage.MaxUsage}</p>"             +
+                          $"<p><strong>Min CPU Utilization:</strong> {cpuUsage.MinUsage}</p>"             +
+                          "<br>"                                                                          +
+                          "<p><strong>ERP Transactions in the Last 5 Minutes:</strong></p>"               +
                           "<ul>";
 
             foreach (var tranGroup in erpTrans.GroupBy(g => g.TransactionType + "," + g.ScreenID + "," + g.ActionName))
@@ -77,9 +83,21 @@ namespace PX.Objects.SO
                 body +=
                     $"<li><strong>Screen ID:</strong> {process.UrlToScreen} | <strong>User:</strong> {process.UserId} | <strong>Run Time (ms):</strong> {process.RequestCpuTimeMs}</li>";
 
-            body += "</ul>"   +
-                    "</body>" +
+            var cause                  = string.Empty;
+            int apiTransactions        = erpTrans.Count(t => t.TransactionType == "A");
+            int uiTransactions         = erpTrans.Count(t => t.TransactionType == "U");
+            int backgroundTransactions = erpTrans.Count(t => t.TransactionType == "S");
+
+            if (apiTransactions        > 0) cause += " (API Transactions)";
+            if (uiTransactions         > 0) cause += " (UI Transactions)";
+            if (backgroundTransactions > 0) cause += " (Background Processes)";
+
+            body += "</ul>"                                          +
+                    "<br>"                                           +
+                    $"<p><strong>Likely Cause:</strong> {cause}</p>" +
+                    "</body>"                                        +
                     "</html>";
+
 
             notificationGenerator.Body = body;
             foreach (CRSMEmail log in notificationGenerator.Send())
