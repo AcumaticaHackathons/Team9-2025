@@ -62,6 +62,9 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DAC\" />
+  </ItemGroup>
 
   <!-- Build Settings -->
   <Target Name="BuildProjectAndPackage" AfterTargets="Build">
