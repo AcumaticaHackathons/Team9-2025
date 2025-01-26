@@ -1,5 +1,6 @@
 using LS.EfficiencyMonitor;
 using PX.Data;
+using PX.Objects.SO.DAC;
 using System.Collections;
 
 namespace PX.Objects.SO
@@ -9,6 +10,8 @@ namespace PX.Objects.SO
         public static bool IsActive() => true;
 
         public PXSelectOrderBy<AlertLog, OrderBy<Desc<AlertLog.createdDateTime>>> logs;
+        [PXCopyPasteHiddenView]
+        public PXFilter<PopUpFilter> PopUpFilter;
 
         #region Actions
         public PXAction<SOOrder> ReportDelay;
@@ -17,8 +20,10 @@ namespace PX.Objects.SO
         [PXProcessButton]
         protected virtual IEnumerable reportDelay(PXAdapter adapter)
         {
-            LogStatus();
-            
+            if (PopUpFilter.AskExt() == WebDialogResult.OK)
+            {
+                LogStatus();
+            }
             return adapter.Get();
         }
         #endregion
