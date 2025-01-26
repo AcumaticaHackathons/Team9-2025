@@ -1,0 +1,15 @@
+﻿<Sql TableName="AlertPreferences" TableSchemaXml="#CDATA">
+    <CDATA name="TableSchemaXml"><![CDATA[<table name="AlertPreferences">
+  <col name="CompanyID" type="Int" default="Zero" />
+  <col name="AlertBasedOnUserReport" type="Bit" nullable="true" />
+  <col name="UserReportThreshold" type="Int" nullable="true" />
+  <col name="UserReportThresholdTime" type="Int" nullable="true" />
+  <col name="AlertBasedOnUtilization" type="Bit" nullable="true" />
+  <col name="CpuThreshold" type="Int" nullable="true" />
+  <col name="CpuThresholdTime" type="Int" nullable="true" />
+  <col name="NotificationTemplateID" type="Int" nullable="true" />
+  <index name="PK__AlertPre__2D971C4C19CF4839" clustered="true" primary="true" unique="true">
+    <col name="CompanyID" />
+  </index>
+</table>]]></CDATA>
+</Sql>
