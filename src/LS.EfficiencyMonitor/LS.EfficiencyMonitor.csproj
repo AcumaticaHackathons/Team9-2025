@@ -16,6 +16,9 @@
       <HintPath>$(AcumaticaSiteDir)Bin\Autofac.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+      <HintPath>..\..\Acumatica_24_2\Bin\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Serilog">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(AcumaticaSiteDir)Bin\Serilog.dll</HintPath>
