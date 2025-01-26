@@ -3,8 +3,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace LS.EfficiencyMonitor
 {
-    public class EfficiencyAutofac  : Module
+    public class EfficiencyAutofac : Module
     {
+        // comment
         protected override void Load(ContainerBuilder builder)
         {
             // Register MyHostedService as IHostedService
